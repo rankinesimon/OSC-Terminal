@@ -9,14 +9,11 @@ namespace OSC_Terminal
     /// <summary>
     /// Uses packet arrival data and size to produce a log of data rate which may be saved to file. Extends the packet counter class
     /// </summary>
-    public class RateLogger : PacketCounter
+    class RateLogger : PacketCounter
     {
         /******************************************************
          *                    Properties
          ******************************************************/
-        private List<int> packetSize = new List<int>();//used to store the size of recieved packets
-        private List<logEntry> log = new List<logEntry>();//contents of log
-        private float logInterval;//time between logs in s
         public logStatus logState {get; protected set;}//current status of log
         public String logFile { get; protected set; }//file to use for log
         protected System.Windows.Forms.Timer logTrigger;
@@ -56,19 +53,6 @@ namespace OSC_Terminal
             // exception propagates from a remoting server to the client.  
             protected logNotRunningException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) { }
-        }
-
-        /******************************************************
-         *                    Strctures
-         ******************************************************/
-
-        /// <summary>
-        /// Represents one log entry
-        /// </summary>
-        private struct logEntry
-        {
-            DateTime timestamp; //timestamp of log entry
-            int throughput;     //throughput for that log entry
         }
 
         /******************************************************

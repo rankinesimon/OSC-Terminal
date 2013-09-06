@@ -67,6 +67,10 @@ namespace OSC_Terminal
             formUpdateTimer.Interval = 50;
             formUpdateTimer.Tick += new EventHandler(formUpdateTimer_Tick);
             formUpdateTimer.Start();
+
+            //set up log menu options
+            pauseLogToolStripMenuItem.Enabled = false;
+            stopLoggingToolStripMenuItem.Enabled = false;
         }
 
         private void FormTerminal_FormClosing(object sender, FormClosingEventArgs e)
@@ -172,7 +176,7 @@ namespace OSC_Terminal
         {
             try
             {
-                System.Diagnostics.Process.Start("https://github.com/xioTechnologies/OSC-Terminal");
+                //System.Diagnostics.Process.Start("https://github.com/xioTechnologies/OSC-Terminal");
             }
             catch { }
         }
@@ -273,5 +277,15 @@ namespace OSC_Terminal
         }
 
         #endregion
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void startLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
