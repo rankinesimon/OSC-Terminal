@@ -22,7 +22,6 @@ namespace OSC_Terminal
         protected System.Windows.Forms.Timer logTrigger;
         protected StreamWriter logWriter;
 
-
         /******************************************************
          *                   Enumerations
          ******************************************************/
@@ -45,6 +44,17 @@ namespace OSC_Terminal
             // A constructor is needed for serialization when an 
             // exception propagates from a remoting server to the client.  
             protected logAlreadyRunningException(System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) { }
+        }
+        public class logNotRunningException : System.Exception
+        {
+            public logNotRunningException() : base() { }
+            public logNotRunningException(string message) : base(message) { }
+            public logNotRunningException(string message, System.Exception inner) : base(message, inner) { }
+
+            // A constructor is needed for serialization when an 
+            // exception propagates from a remoting server to the client.  
+            protected logNotRunningException(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) { }
         }
 
@@ -79,51 +89,93 @@ namespace OSC_Terminal
             timer.Start();
         }
 
+        /// <summary>
+        /// Retrieves the current data rate in bit/s
+        /// </summary>
+        /// <returns></returns>
         public float DataRate()
         {
             return PacketRate * 800;
         }
         
+        /// <summary>
+        /// Sets up the log file ready to run. 
+        /// Throws a logAlreadyRunningException if the logger is already running
+        /// </summary>
+        /// <param name="logInterval">Time between log entries</param>
+        /// <param name="filePath">Location of log file</param>
         public void startLog(int logInterval, string filePath){
-            if (logState == logStatus.log_stopped)
-            {
+            if(logState == logStatus.log_stopped){
                 //setup file to write to
-                if (!File.Exists(@filePath))
-                {
+                if (!File.Exists(@filePath)){//file does not already exist
                     logWriter = File.CreateText(filePath);
-                }
-                else
-                {
+                }else{//file does already exist
                     logWriter = new StreamWriter(@filePath);
                 }
+                //intialise log clock
                 logTrigger = new System.Windows.Forms.Timer();
                 logTrigger.Interval = logInterval * 1000;
                 logTrigger.Tick += new EventHandler(logEvent);
                 logTrigger.Start();
 
                 logState = logStatus.log_running;
-            }
-            else
-            {
+            }else{
                 throw new logAlreadyRunningException();
             }
         }
 
-        public void pauseLog()
+        /// <summary>
+        /// Resumes logging operation after being suspended with pause operation
+        /// </summary>
+        public void resumeLog()
         {
-            logTrigger.Stop();
-            logState = logStatus.log_stopped;
+            //check log is paused
+            switch(logState){
+                case logStatus.log_running:
+                    throw new logAlreadyRunningException();
+                case logStatus.log_stopped:
+                    throw new logNotRunningException();
+                case logStatus.log_paused:
+                    logTrigger.Start();
+                    logState = logStatus.log_running;
+                    break;
+            }
         }
 
+        /// <summary>
+        /// temporarily suspend logging operation
+        /// </summary>
+        public void pauseLog()
+        {
+            if (logState == logStatus.log_running)
+            {
+                logTrigger.Stop();
+                logState = logStatus.log_paused;
+            }
+            else
+            {
+                throw new logNotRunningException();
+            }
+        }
+
+        /// <summary>
+        /// end the log operation and close the file
+        /// </summary>
         public void stopLog()
         {
             logTrigger.Stop();
-            
+            logWriter.Close();
+            logState = logStatus.log_stopped;
         }
 
+        /// <summary>
+        /// Add another entry to the log
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void logEvent(object sender, EventArgs e)
         {
-
+            logWriter.WriteLine(DateTime.Now + "\t" + PacketRate + "\t" + DataRate());
         }
     }
 }
