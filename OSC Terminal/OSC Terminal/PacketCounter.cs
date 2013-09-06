@@ -13,27 +13,27 @@ namespace OSC_Terminal
         /// <summary>
         /// Timer to calculate packet rate.
         /// </summary>
-        private System.Windows.Forms.Timer timer;
+        protected System.Windows.Forms.Timer timer;
 
         /// <summary>
         /// Number of packets received.
         /// </summary>
-        public int PacketsReceived { get; private set; }
+        public int PacketsReceived { get; protected set; }
 
         /// <summary>
         /// Packet receive rate as packets per second.
         /// </summary>
-        public int PacketRate { get; private set; }
+        public int PacketRate { get; protected set; }
 
         /// <summary>
         /// Used to calculate packet rate.
         /// </summary>
-        private DateTime prevTime;
+        protected DateTime prevTime;
 
         /// <summary>
         /// Used to calculate packet rate.
         /// </summary>
-        private int prevPacketsReceived;
+        protected int prevPacketsReceived;
 
         /// <summary>
         /// Constructor.
@@ -70,7 +70,7 @@ namespace OSC_Terminal
         /// <summary>
         /// timer Tick event to calculate packet rate.
         /// </summary>
-        void timer_Tick(object sender, EventArgs e)
+        public void timer_Tick(object sender, EventArgs e)
         {
             DateTime nowTime = DateTime.Now;
             TimeSpan t = nowTime - prevTime;
