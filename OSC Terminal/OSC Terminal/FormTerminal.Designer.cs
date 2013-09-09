@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTerminal));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +47,7 @@
             this.toolStripStatusLabelPacketRate = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusDataRate = new System.Windows.Forms.ToolStripStatusLabel();
             this.textBox = new System.Windows.Forms.TextBox();
+            this.toolStripStatusLogInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -163,7 +165,8 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelPacketsReceived,
             this.toolStripStatusLabelPacketRate,
-            this.toolStripStatusDataRate});
+            this.toolStripStatusDataRate,
+            this.toolStripStatusLogInfo});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.statusStrip.Location = new System.Drawing.Point(0, 342);
             this.statusStrip.Name = "statusStrip";
@@ -203,6 +206,12 @@
             this.textBox.TabIndex = 1;
             this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             // 
+            // toolStripStatusLogInfo
+            // 
+            this.toolStripStatusLogInfo.Name = "toolStripStatusLogInfo";
+            this.toolStripStatusLogInfo.Size = new System.Drawing.Size(45, 15);
+            this.toolStripStatusLogInfo.Text = "logInfo";
+            // 
             // FormTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,6 +220,7 @@
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "FormTerminal";
             this.Text = "FormTerminal";
@@ -245,6 +255,7 @@
         private System.Windows.Forms.ToolStripMenuItem stopLoggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusDataRate;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLogInfo;
     }
 }
 

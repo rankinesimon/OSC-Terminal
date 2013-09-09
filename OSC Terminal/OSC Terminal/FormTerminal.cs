@@ -71,6 +71,9 @@ namespace OSC_Terminal
             //set up log menu options
             pauseLogToolStripMenuItem.Enabled = false;
             stopLoggingToolStripMenuItem.Enabled = false;
+
+            //init log info
+            toolStripStatusLogInfo.Text = "Log Stopped";
         }
 
         private void FormTerminal_FormClosing(object sender, FormClosingEventArgs e)
@@ -329,6 +332,7 @@ namespace OSC_Terminal
                 startLogToolStripMenuItem.Enabled = false;
                 pauseLogToolStripMenuItem.Enabled = true;
                 stopLoggingToolStripMenuItem.Enabled = true;
+                toolStripStatusLogInfo.Text = "Log Running";
             }
         }
 
@@ -360,6 +364,7 @@ namespace OSC_Terminal
 
                 //Update GUI Controls
                 pauseLogToolStripMenuItem.Text = "Resume log";
+                toolStripStatusLogInfo.Text = "Log Paused";
             }
             else
             {
@@ -376,6 +381,7 @@ namespace OSC_Terminal
 
                 //Update GUI Controls
                 pauseLogToolStripMenuItem.Text = "Pause log";
+                toolStripStatusLogInfo.Text = "Log Running";
             }
         }
 
@@ -401,6 +407,7 @@ namespace OSC_Terminal
             pauseLogToolStripMenuItem.Text = "Pause log";
             stopLoggingToolStripMenuItem.Enabled = false;
             startLogToolStripMenuItem.Enabled = true;
+            toolStripStatusLogInfo.Text = "Log Stopped";
             MessageBox.Show("Logging completed sucessfully at: " + DateTime.Now, "Logging complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
