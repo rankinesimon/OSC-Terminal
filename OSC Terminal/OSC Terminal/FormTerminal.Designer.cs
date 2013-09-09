@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pauseLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopLoggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemReceivePort = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemTerminal = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemEnabled = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,12 +44,8 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelPacketsReceived = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelPacketRate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusDataRate = new System.Windows.Forms.ToolStripStatusLabel();
             this.textBox = new System.Windows.Forms.TextBox();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pauseLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stopLoggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +62,45 @@
             this.menuStrip.Size = new System.Drawing.Size(584, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startLogToolStripMenuItem,
+            this.pauseLogToolStripMenuItem,
+            this.stopLoggingToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // startLogToolStripMenuItem
+            // 
+            this.startLogToolStripMenuItem.Name = "startLogToolStripMenuItem";
+            this.startLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startLogToolStripMenuItem.Text = "Start log...";
+            this.startLogToolStripMenuItem.Click += new System.EventHandler(this.startLogToolStripMenuItem_Click);
+            // 
+            // pauseLogToolStripMenuItem
+            // 
+            this.pauseLogToolStripMenuItem.Name = "pauseLogToolStripMenuItem";
+            this.pauseLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pauseLogToolStripMenuItem.Text = "Pause log";
+            this.pauseLogToolStripMenuItem.Click += new System.EventHandler(this.pauseLogToolStripMenuItem_Click);
+            // 
+            // stopLoggingToolStripMenuItem
+            // 
+            this.stopLoggingToolStripMenuItem.Name = "stopLoggingToolStripMenuItem";
+            this.stopLoggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stopLoggingToolStripMenuItem.Text = "Stop logging";
+            this.stopLoggingToolStripMenuItem.Click += new System.EventHandler(this.stopLoggingToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // toolStripMenuItemReceivePort
             // 
@@ -122,7 +162,8 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelPacketsReceived,
-            this.toolStripStatusLabelPacketRate});
+            this.toolStripStatusLabelPacketRate,
+            this.toolStripStatusDataRate});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.statusStrip.Location = new System.Drawing.Point(0, 342);
             this.statusStrip.Name = "statusStrip";
@@ -142,6 +183,12 @@
             this.toolStripStatusLabelPacketRate.Size = new System.Drawing.Size(170, 15);
             this.toolStripStatusLabelPacketRate.Text = "toolStripStatusLabelPacketRate";
             // 
+            // toolStripStatusDataRate
+            // 
+            this.toolStripStatusDataRate.Name = "toolStripStatusDataRate";
+            this.toolStripStatusDataRate.Size = new System.Drawing.Size(131, 15);
+            this.toolStripStatusDataRate.Text = "toolStripStatusDataRate";
+            // 
             // textBox
             // 
             this.textBox.BackColor = System.Drawing.Color.Black;
@@ -154,43 +201,7 @@
             this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox.Size = new System.Drawing.Size(584, 318);
             this.textBox.TabIndex = 1;
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startLogToolStripMenuItem,
-            this.pauseLogToolStripMenuItem,
-            this.stopLoggingToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // startLogToolStripMenuItem
-            // 
-            this.startLogToolStripMenuItem.Name = "startLogToolStripMenuItem";
-            this.startLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.startLogToolStripMenuItem.Text = "Start log...";
-            this.startLogToolStripMenuItem.Click += new System.EventHandler(this.startLogToolStripMenuItem_Click);
-            // 
-            // pauseLogToolStripMenuItem
-            // 
-            this.pauseLogToolStripMenuItem.Name = "pauseLogToolStripMenuItem";
-            this.pauseLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.pauseLogToolStripMenuItem.Text = "Pause log";
-            // 
-            // stopLoggingToolStripMenuItem
-            // 
-            this.stopLoggingToolStripMenuItem.Name = "stopLoggingToolStripMenuItem";
-            this.stopLoggingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.stopLoggingToolStripMenuItem.Text = "Stop logging";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             // 
             // FormTerminal
             // 
@@ -233,6 +244,7 @@
         private System.Windows.Forms.ToolStripMenuItem pauseLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopLoggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusDataRate;
     }
 }
 

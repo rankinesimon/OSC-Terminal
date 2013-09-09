@@ -103,6 +103,9 @@ namespace OSC_Terminal
                 logTrigger.Start();
 
                 logState = logStatus.log_running;
+
+                //write heading line of log
+                logWriter.WriteLine("Timestamp \t\t Packet Rate \t Data Rate");
             }else{
                 throw new logAlreadyRunningException();
             }
@@ -159,7 +162,7 @@ namespace OSC_Terminal
         /// <param name="e"></param>
         private void logEvent(object sender, EventArgs e)
         {
-            logWriter.WriteLine(DateTime.Now + "\t" + PacketRate + "\t" + DataRate());
+            logWriter.WriteLine(DateTime.Now + "\t " + PacketRate + "\t\t " + DataRate());
         }
     }
 }

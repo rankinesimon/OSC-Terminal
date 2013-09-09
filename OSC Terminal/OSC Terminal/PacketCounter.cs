@@ -75,7 +75,15 @@ namespace OSC_Terminal
             DateTime nowTime = DateTime.Now;
             TimeSpan t = nowTime - prevTime;
             prevTime = nowTime;
-            PacketRate = (int)((float)(PacketsReceived - prevPacketsReceived) / ((float)t.Seconds + (float)t.Milliseconds * 0.001f));
+            //avoid deviding by zero
+            if (t.Seconds == 0 && t.Milliseconds == 0)
+            {
+                PacketRate = 0;
+            }
+            else
+            {
+                PacketRate = (int)((float)(PacketsReceived - prevPacketsReceived) / ((float)t.Seconds + (float)t.Milliseconds * 0.001f));
+            }
             prevPacketsReceived = PacketsReceived;
         }
     }

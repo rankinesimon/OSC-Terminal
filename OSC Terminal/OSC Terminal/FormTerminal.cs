@@ -24,7 +24,7 @@ namespace OSC_Terminal
         /// <summary>
         /// Sample counter to calculate performance statics.
         /// </summary>
-        private PacketCounter packetCounter = new PacketCounter();
+        private RateLogger packetCounter = new RateLogger();
 
         /// <summary>
         /// TextBoxBuffer containing text printed to terminal.
@@ -105,6 +105,7 @@ namespace OSC_Terminal
             // Update sample counter values
             toolStripStatusLabelPacketsReceived.Text = "Packets Recieved: " + packetCounter.PacketsReceived.ToString();
             toolStripStatusLabelPacketRate.Text = "Packet Rate: " + packetCounter.PacketRate.ToString();
+            toolStripStatusDataRate.Text = "Data Rate: " + packetCounter.DataRate().ToString();
         }
 
         #endregion
@@ -280,12 +281,127 @@ namespace OSC_Terminal
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //check to see if log is running still
+            if (packetCounter.logState != RateLogger.logStatus.log_stopped)
+            {
+                try
+                {
+                    packetCounter.stopLog();
+                }
+                catch (RateLogger.logNotRunningException a)
+                {
+                    MessageBox.Show("Cannot stop log as it is not currently running", "Log not running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
             this.Close();
         }
 
+        /// <summary>
+        /// Handles a button press on the start log button
+        /// Opens a fileOpen dialog to allow user to select log filepath
+        /// and then starts logging operation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void startLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //Set up save file dialog
+            SaveFileDialog saveLog = new SaveFileDialog();
+            saveLog.CheckPathExists = true;
+            saveLog.DefaultExt = "txt";
+            saveLog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            saveLog.ValidateNames = true;
+            saveLog.Title = "Save Log File";
+            if (saveLog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    packetCounter.startLog(1, saveLog.FileName);
+                }
+                catch (RateLogger.logAlreadyRunningException a)
+                {
+                    MessageBox.Show("Cannot start log - log already running. Please stop the logging operation and try again.", "Log Already Running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
+                //cheange GUI controls to reflect the log is running
+                startLogToolStripMenuItem.Enabled = false;
+                pauseLogToolStripMenuItem.Enabled = true;
+                stopLoggingToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Handles an event triggered by the pause log button being pressed.
+        /// Pauses and resumes logging and toggles button text
+        /// </summary>
+        /// <param name="sender">sender object</param>
+        /// <param name="e">send parameters</param>
+        private void pauseLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (packetCounter.logState == RateLogger.logStatus.log_running)//check to see if log is running
+            {
+                //attempt to pause log
+                try
+                {
+                    packetCounter.pauseLog();
+                }
+                catch (RateLogger.logNotRunningException a)
+                {
+                    MessageBox.Show("Cannot pause log - log is not running", "Log not running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //Update GUI Controls
+                pauseLogToolStripMenuItem.Text = "Resume log";
+            }
+            else
+            {
+                //attempt to resume log
+                try
+                {
+                    packetCounter.resumeLog();
+                }
+                catch (RateLogger.logAlreadyRunningException a)
+                {
+                    MessageBox.Show("Cannot resume log - log is already", "Log already running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //Update GUI Controls
+                pauseLogToolStripMenuItem.Text = "Pause log";
+            }
+        }
+
+        /// <summary>
+        /// Handles a button press on the stop log button
+        /// Halts logging operation
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Object parameters</param>
+        private void stopLoggingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //try to stop log
+            try
+            {
+                packetCounter.stopLog();
+            }
+            catch(RateLogger.logNotRunningException a)
+            {
+                MessageBox.Show("Cannot stop log as it is not currently running", "Log not running", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            pauseLogToolStripMenuItem.Enabled = false;
+            pauseLogToolStripMenuItem.Text = "Pause log";
+            stopLoggingToolStripMenuItem.Enabled = false;
+            startLogToolStripMenuItem.Enabled = true;
+            MessageBox.Show("Logging completed sucessfully at: " + DateTime.Now, "Logging complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
